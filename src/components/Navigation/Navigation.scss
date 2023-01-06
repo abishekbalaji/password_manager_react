@@ -1,0 +1,19 @@
+.navbar_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 25px 80px;
+  //   height: 60px;
+  background-color: rgb(252, 232, 207);
+
+  .navbar_links-container {
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+  }
+
+  .navbar_navlink {
+    color: brown;
+    font-weight: bold;
+  }
+}
