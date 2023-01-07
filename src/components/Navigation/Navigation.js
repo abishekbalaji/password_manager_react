@@ -1,8 +1,14 @@
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { selectCurrentUser } from "../../store/user/userSelectors";
 
 import "./Navigation.scss";
+import { signOutUser } from "../../utils/firebase/firebase";
 
 const Navigation = () => {
+  const handleSignOut = async () => await signOutUser();
+  const currentUser = useSelector(selectCurrentUser);
   return (
     <>
       <div className="navbar_container">
@@ -16,9 +22,15 @@ const Navigation = () => {
           <Link className="navbar_navlink" to="/retrieve">
             Retrieve Item
           </Link>
-          <Link className="navbar_navlink" to="/auth">
-            Sign In
-          </Link>
+          {currentUser ? (
+            <span onClick={handleSignOut} className="navbar_navlink">
+              Sign Out
+            </span>
+          ) : (
+            <Link className="navbar_navlink" to="/auth">
+              Sign In
+            </Link>
+          )}
         </div>
       </div>
       <Outlet />

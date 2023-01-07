@@ -1,0 +1,5 @@
+const USER_REDUCER_TYPES = {
+  SET_CURRENT_USER: "SET_CURRENT_USER",
+};
+
+export default USER_REDUCER_TYPES;

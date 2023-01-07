@@ -1,5 +1,12 @@
 import { useState } from "react";
+import Button from "../Button/Button";
 import FormInput from "../FormInput/FormInput";
+
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocument,
+} from "../../utils/firebase/firebase";
+
 import "./SignUp.scss";
 
 const INITIAL_FORM_STATE = {
@@ -18,10 +25,30 @@ const SignUp = () => {
     setFormFields((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // Do auth
-    setFormFields(INITIAL_FORM_STATE);
+
+    if (password !== confirmPassword) {
+      alert("Password donot match!");
+      return;
+    }
+    try {
+      const response = await createAuthUserWithEmailAndPassword(
+        email,
+        password
+      );
+      const { user } = response;
+      await createUserDocument(user, "users", {
+        displayName,
+      });
+      setFormFields(INITIAL_FORM_STATE);
+    } catch (error) {
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email already in use");
+      } else {
+        console.log("User already exists", error);
+      }
+    }
   };
 
   return (
@@ -61,6 +88,7 @@ const SignUp = () => {
           onChange={handleInputChange}
           required
         />
+        <Button type="submit">Sign Up</Button>
       </form>
     </div>
   );
