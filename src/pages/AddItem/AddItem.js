@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../../components/Button/Button";
 import FormInput from "../../components/FormInput/FormInput";
-import { addItemToDB } from "../../utils/db/helperFunctions";
+import { selectCurrentUser } from "../../store/user/userSelectors";
 
 import "./AddItem.scss";
 
@@ -14,17 +15,37 @@ const INITIAL_FORM_STATE = {
 const AddItem = () => {
   const [formFields, setFormFields] = useState(INITIAL_FORM_STATE);
   const { title, user, password } = formFields;
+  const currentUser = useSelector(selectCurrentUser);
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields((prev) => ({ ...prev, [name]: value }));
   };
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    const entryObj = {
-      title,
-      creds: { user, password },
-    };
-    await addItemToDB(entryObj);
+    if (currentUser) {
+      const entryObj = {
+        title,
+        creds: { user, password, author: currentUser.email },
+      };
+      console.log(entryObj);
+      try {
+        const URL = "http://localhost:8080/manage/add";
+        const response = await fetch(URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(entryObj),
+        });
+        const resData = await response.json();
+        console.log(resData);
+      } catch (error) {
+        console.log(error);
+      }
+      setFormFields(INITIAL_FORM_STATE);
+    } else {
+      alert("Sign in first!");
+    }
   };
   return (
     <div className="add-item_container">
