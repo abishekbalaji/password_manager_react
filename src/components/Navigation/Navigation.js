@@ -1,13 +1,16 @@
 import { Link, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { selectCurrentUser } from "../../store/user/userSelectors";
 
 import "./Navigation.scss";
-import { signOutUser } from "../../utils/firebase/firebase";
+import { signOutAsync } from "../../store/user/userActions";
 
 const Navigation = () => {
-  const handleSignOut = async () => await signOutUser();
+  const dispatch = useDispatch();
+  const handleSignOut = async () => {
+    dispatch(signOutAsync());
+  };
   const currentUser = useSelector(selectCurrentUser);
   return (
     <>

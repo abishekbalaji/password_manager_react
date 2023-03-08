@@ -50,14 +50,10 @@ export const onAuthStateChangedListener = (callback) =>
 
 const db = getFirestore();
 
-export const createUserDocument = async (
-  userAuth,
-  collectionName,
-  additonalInfo = {}
-) => {
+export const createUserDocument = async (userAuth, additonalInfo = {}) => {
   if (!userAuth) return;
 
-  const userRef = doc(db, collectionName, userAuth.uid);
+  const userRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userRef);
 
   if (!userSnapshot.exists()) {

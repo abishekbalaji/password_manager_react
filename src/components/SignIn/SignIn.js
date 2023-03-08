@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
-  signInAuthWithEmailAndPassword,
-  signInWithGooglePopup,
-} from "../../utils/firebase/firebase";
+  signInAuthWithGoogleAsync,
+  signInWithEmailAndPasswordAsync,
+} from "../../store/user/userActions";
 import Button from "../Button/Button";
 import FormInput from "../FormInput/FormInput";
 import "./SignIn.scss";
@@ -14,10 +16,15 @@ const INITIAL_FORM_STATE = {
 
 const SignIn = () => {
   const [formFields, setFormFields] = useState(INITIAL_FORM_STATE);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { email, password } = formFields;
 
-  const handleGoogleSignIn = async () => await signInWithGooglePopup();
+  const handleGoogleSignIn = async () => {
+    dispatch(signInAuthWithGoogleAsync());
+    // navigate("/");
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,8 +36,9 @@ const SignIn = () => {
 
     // Do authentication
     try {
-      await signInAuthWithEmailAndPassword(email, password);
+      dispatch(signInWithEmailAndPasswordAsync(email, password));
       setFormFields(INITIAL_FORM_STATE);
+      navigate("/");
     } catch (error) {
       if (
         error.code === "auth/user-not-found" ||
