@@ -1,0 +1,29 @@
+.retrieved-items_container {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .retrieved-items_no-match {
+
+  }
+  .retrieved-item {
+    // margin: auto;
+    // width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    .retrieved-item_user {
+        margin-right: 40px;
+        margin-bottom: 30px;
+
+        .retrieved-item_user-value {
+            font-weight: bold;
+        }
+    }
+    .retrieved-item_password {
+        .retrieved-item_password-value {
+            font-weight: bold;
+        }
+    }
+  }
+}

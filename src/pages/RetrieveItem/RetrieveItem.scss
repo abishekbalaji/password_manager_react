@@ -1,0 +1,16 @@
+.retrieve-items_page {
+  padding: 60px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .retrieve-items_form {
+    width: 600px;
+  }
+
+  .retrieved-items_section {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+  }
+}
